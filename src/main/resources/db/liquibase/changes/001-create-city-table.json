@@ -1,0 +1,44 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "001-create-city-table.json",
+        "author": "city-list",
+        "changes": [
+          {
+            "createTable": {
+              "tableName": "T_CITY",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "NUMERIC",
+                    "constraints": {
+                      "primaryKey": true,
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "name",
+                    "type": "varchar(100)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "photo",
+                    "type": "text"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
