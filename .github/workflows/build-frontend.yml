@@ -18,6 +18,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: city-list-frontend/package-lock.json
       - run: npm install
       - run: npm run build
       - run: npm run test:coverage
