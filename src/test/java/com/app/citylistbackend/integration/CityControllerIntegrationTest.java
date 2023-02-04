@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static com.app.citylistbackend.constant.ValidationConstants.PAGE_MUST_BE_GREATER_THAN_0;
+import static com.app.citylistbackend.constant.ValidationConstants.PAGE_MUST_BE_EQUAL_OR_GREATER_THAN_0;
 import static com.app.citylistbackend.constant.ValidationConstants.PAGE_SIZE_MUST_BE_GREATER_THAN_0;
 
 @SpringBootTest
@@ -25,7 +25,7 @@ class CityControllerIntegrationTest {
 
     @Test
     void testListCities_CityRepositoryReturnsItems() throws Exception {
-        ResultActions response = mockAndReturnResultActions(1, 1);
+        ResultActions response = mockAndReturnResultActions(0, 1);
         validateMatcher(response, MockMvcResultMatchers.status().isOk());
         response.andExpect(jsonPath("$.content", Matchers.hasSize(1)));
         response.andExpect(jsonPath("$.content[0].id", Matchers.notNullValue()));
@@ -40,11 +40,11 @@ class CityControllerIntegrationTest {
 
         validateMatcher(response, MockMvcResultMatchers.status().isBadRequest());
         validateConstraint(response, PAGE_SIZE_MUST_BE_GREATER_THAN_0);
-        validateConstraint(response, PAGE_MUST_BE_GREATER_THAN_0);
+        validateConstraint(response, PAGE_MUST_BE_EQUAL_OR_GREATER_THAN_0);
 
         response = mockAndReturnResultActions(-1, 1);
         validateMatcher(response, MockMvcResultMatchers.status().isBadRequest());
-        validateConstraint(response, PAGE_MUST_BE_GREATER_THAN_0);
+        validateConstraint(response, PAGE_MUST_BE_EQUAL_OR_GREATER_THAN_0);
 
         response = mockAndReturnResultActions(1, -1);
         validateMatcher(response, MockMvcResultMatchers.status().isBadRequest());
@@ -52,12 +52,7 @@ class CityControllerIntegrationTest {
 
         response = mockAndReturnResultActions(0, 0);
         validateMatcher(response, MockMvcResultMatchers.status().isBadRequest());
-        validateConstraint(response, PAGE_MUST_BE_GREATER_THAN_0);
         validateConstraint(response, PAGE_SIZE_MUST_BE_GREATER_THAN_0);
-
-        response = mockAndReturnResultActions(0, 1);
-        validateMatcher(response, MockMvcResultMatchers.status().isBadRequest());
-        validateConstraint(response, PAGE_MUST_BE_GREATER_THAN_0);
 
         response = mockAndReturnResultActions(1, 0);
         validateMatcher(response, MockMvcResultMatchers.status().isBadRequest());
