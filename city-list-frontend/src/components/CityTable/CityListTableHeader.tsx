@@ -6,9 +6,9 @@ import * as React from "react";
 export const CityListTableHeader = () => (
   <TableHead>
     <TableRow>
-      <TableCell>ID</TableCell>
-      <TableCell>Name</TableCell>
-      <TableCell>Photo</TableCell>
+      <TableCell align="left">ID</TableCell>
+      <TableCell align="center">Name</TableCell>
+      <TableCell align="center">Photo</TableCell>
     </TableRow>
   </TableHead>
 );
