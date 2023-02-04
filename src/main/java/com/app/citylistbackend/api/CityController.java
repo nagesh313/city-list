@@ -13,12 +13,13 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.app.citylistbackend.constant.ValidationConstants.PAGE_MUST_BE_GREATER_THAN_0;
+import static com.app.citylistbackend.constant.ValidationConstants.PAGE_MUST_BE_EQUAL_OR_GREATER_THAN_0;
 import static com.app.citylistbackend.constant.ValidationConstants.PAGE_SIZE_MUST_BE_GREATER_THAN_0;
 
 @Validated
@@ -34,7 +35,7 @@ public class CityController {
 
 
     @GetMapping("/list")
-    public Page<City> listCities(@RequestParam(defaultValue = "1") @Positive(message = PAGE_MUST_BE_GREATER_THAN_0) int page,
+    public Page<City> listCities(@RequestParam(defaultValue = "0") @PositiveOrZero(message = PAGE_MUST_BE_EQUAL_OR_GREATER_THAN_0) int page,
                                  @RequestParam(defaultValue = "10") @Positive(message = PAGE_SIZE_MUST_BE_GREATER_THAN_0) int pageSize) {
         return cityRepository.findAll(Pageable.ofSize(pageSize).withPage(page));
     }
