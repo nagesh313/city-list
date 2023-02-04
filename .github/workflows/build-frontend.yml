@@ -23,6 +23,8 @@ jobs:
       - run: npm run test:coverage
       - name: Official SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v1.2.0
+        with:
+          projectBaseDir: city-list-frontend
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
