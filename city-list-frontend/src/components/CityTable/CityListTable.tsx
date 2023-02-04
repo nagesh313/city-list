@@ -1,6 +1,7 @@
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
+import axios from "axios";
 import * as React from "react";
 import { City } from "../interfaces/City";
 import { CityListTableBody } from "./CityListTableBody";
@@ -8,8 +9,16 @@ import { CityListTableHeader } from "./CityListTableHeader";
 
 export const CityListTable = () => {
   const [cityList, setCityList] = React.useState<City[]>([]);
+  const getCityList = async () => {
+    const {
+      data: { content, pageable },
+    } = await axios.get("/api/v1/city/list");
+    console.log(content);
+    console.log(pageable);
+    setCityList(content);
+  };
   React.useEffect(() => {
-    setCityList([{ id: 1, name: "Test Name", photo: "Test Photo" }]); //TODO: Replace this with an API call from the backend
+    getCityList();
   }, []);
   return (
     <TableContainer component={Paper}>

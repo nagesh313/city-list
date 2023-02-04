@@ -10,7 +10,13 @@ export const CityListTableBody = (props: { cityList: City[] }) => {
         <TableRow key={row.id}>
           <TableCell>{row.id}</TableCell>
           <TableCell>{row.name}</TableCell>
-          <TableCell>{row.photo}</TableCell>
+          <TableCell>
+            <img
+              src={row.photo}
+              style={{ maxHeight: "50px" }}
+              alt={`city-${row.id}`}
+            ></img>
+          </TableCell>
         </TableRow>
       ))}
     </TableBody>
