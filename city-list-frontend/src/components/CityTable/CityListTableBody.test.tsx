@@ -12,6 +12,6 @@ test("renders CityListTableBody Component", () => {
   expect(linkElement).toBeInTheDocument();
   linkElement = screen.getByText(/test-name/i);
   expect(linkElement).toBeInTheDocument();
-  linkElement = screen.getByText(/test-photo/i);
+  linkElement = screen.getByAltText(/city-1/i);
   expect(linkElement).toBeInTheDocument();
 });

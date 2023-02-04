@@ -8,9 +8,15 @@ export const CityListTableBody = (props: { cityList: City[] }) => {
     <TableBody>
       {props.cityList.map((row: City) => (
         <TableRow key={row.id}>
-          <TableCell>{row.id}</TableCell>
-          <TableCell>{row.name}</TableCell>
-          <TableCell>{row.photo}</TableCell>
+          <TableCell align="left">{row.id}</TableCell>
+          <TableCell align="center">{row.name}</TableCell>
+          <TableCell align="center">
+            <img
+              src={row.photo}
+              style={{ maxHeight: "50px" }}
+              alt={`city-${row.id}`}
+            ></img>
+          </TableCell>
         </TableRow>
       ))}
     </TableBody>
