@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { CityListTablePagination } from "./CityListTablePagination";
-import { PageRequest } from "../interfaces/PageRequest";
+import { IPageRequest } from "../interfaces/PageRequest";
 import { fireEvent, getByText, getByTitle, within } from "@testing-library/dom";
 import { act } from "react-dom/test-utils";
 describe("Test CityListTablePagination", () => {
-  const pageRequest: PageRequest = {
+  const pageRequest: IPageRequest = {
     page: 0,
     pageSize: 10,
     numberOfElements: 100,

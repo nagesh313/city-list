@@ -1,9 +1,9 @@
 import TablePagination from "@mui/material/TablePagination";
 import * as React from "react";
-import { PageRequest } from "../interfaces/PageRequest";
+import { IPageRequest } from "../interfaces/PageRequest";
 
 export const CityListTablePagination = (props: {
-  pageRequest: PageRequest;
+  pageRequest: IPageRequest;
   pageChange: any;
   sizeChange: any;
 }) => {

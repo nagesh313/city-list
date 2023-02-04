@@ -4,21 +4,21 @@ import TableContainer from "@mui/material/TableContainer";
 import axios from "axios";
 import * as React from "react";
 import { City } from "../interfaces/City";
-import { PageRequest } from "../interfaces/PageRequest";
+import { IPage, IPageRequest } from "../interfaces/PageRequest";
 import { CityListTableBody } from "./CityListTableBody";
 import { CityListTableHeader } from "./CityListTableHeader";
 import { CityListTablePagination } from "./CityListTablePagination";
 
 export const CityListTable = () => {
   const [cityList, setCityList] = React.useState<City[]>([]);
-  const [pageRequest, setPageRequest] = React.useState<PageRequest>({
+  const [pageRequest, setPageRequest] = React.useState<IPageRequest>({
     page: 0,
     pageSize: 10,
     numberOfElements: 0,
     totalElements: 0,
   });
 
-  const getCityList = async (page: any) => {
+  const getCityList = async (page: IPage) => {
     const {
       data: { content, number, numberOfElements, size, totalElements },
     } = await axios.get(
@@ -32,17 +32,21 @@ export const CityListTable = () => {
     });
     setCityList(content);
   };
+
   React.useEffect(() => {
     getCityList(pageRequest);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const pageChangeHandler = (
     event: React.MouseEvent<HTMLButtonElement>,
-    newPageNumber: any
+    newPageNumber: number
   ) => {
     getCityList({ page: newPageNumber, pageSize: pageRequest.pageSize });
   };
   const sizeChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    getCityList({ page: pageRequest.page, pageSize: event.target.value });
+    getCityList({
+      page: pageRequest.page,
+      pageSize: Number(event.target.value),
+    });
   };
   return (
     <TableContainer component={Paper}>
