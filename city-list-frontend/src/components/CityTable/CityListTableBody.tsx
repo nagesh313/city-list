@@ -1,3 +1,5 @@
+import { Edit } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
@@ -16,6 +18,16 @@ export const CityListTableBody = (props: { cityList: City[] }) => {
               style={{ maxHeight: "50px" }}
               alt={`city-${row.id}`}
             ></img>
+          </TableCell>
+          <TableCell align="center">
+            <IconButton
+              color="primary"
+              aria-label="Edit City"
+              component="label"
+              className={`city-edit-${row.id}`}
+            >
+              <Edit />
+            </IconButton>
           </TableCell>
         </TableRow>
       ))}
