@@ -14,6 +14,7 @@ export const Search = (props: { handleSearch: any; handleReset: any }) => {
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         <Grid item>
           <TextField
+            autoComplete="off"
             id="search-string"
             label="Search"
             name="searchString"
