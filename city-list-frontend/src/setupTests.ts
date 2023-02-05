@@ -3,3 +3,12 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+
+jest.mock("notistack", () => {
+    const enqueueSnackbarMock = jest.fn();
+    const closeSnackbarMock = jest.fn();
+    return {
+        useSnackbar: () => ({ enqueueSnackbar: enqueueSnackbarMock, closeSnackbar: closeSnackbarMock })
+    }
+});
+
