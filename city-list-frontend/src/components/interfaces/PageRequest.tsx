@@ -5,4 +5,5 @@ export interface IPageRequest extends IPage {
 export interface IPage {
   page: number;
   pageSize: number;
+  searchString?: string;
 }
