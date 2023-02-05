@@ -42,6 +42,19 @@ class CityControllerTest {
 
     }
 
+    @Test
+    void testSearchCity() {
+        // Setup
+        final City city = getCity();
+        final Page<City> cities = new PageImpl<>(List.of(city));
+        when(mockCityRepository.findByNameIgnoreCaseLike(any(String.class), any(Pageable.class))).thenReturn(cities);
+        // Run the test
+        final Page<City> result = cityControllerUnderTest.searchCities("Test", 0, 1);
+        // Verify the results
+        Assertions.assertEquals(result.getContent().get(0), city);
+
+    }
+
     private City getCity() {
         final City city = new City();
         city.setId(0L);

@@ -8,14 +8,18 @@ import { IPage, IPageRequest } from "../interfaces/PageRequest";
 import { CityListTableBody } from "./CityListTableBody";
 import { CityListTableHeader } from "./CityListTableHeader";
 import { CityListTablePagination } from "./CityListTablePagination";
-
+import { Search } from "./Search/Search";
+export const DEFAULT_PAGE = 0;
+export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_NUMBER_OF_ELEMENTS = 0;
+export const DEFAULT_TOTAL_ELEMENTS = 0;
 export const CityListTable = () => {
   const [cityList, setCityList] = React.useState<City[]>([]);
   const [pageRequest, setPageRequest] = React.useState<IPageRequest>({
-    page: 0,
-    pageSize: 10,
-    numberOfElements: 0,
-    totalElements: 0,
+    page: DEFAULT_PAGE,
+    pageSize: DEFAULT_PAGE_SIZE,
+    numberOfElements: DEFAULT_NUMBER_OF_ELEMENTS,
+    totalElements: DEFAULT_TOTAL_ELEMENTS,
   });
 
   const getCityList = async (page: IPage) => {
@@ -25,6 +29,20 @@ export const CityListTable = () => {
       `/api/v1/city/list?page=${page.page}&&pageSize=${page.pageSize}`
     );
     setPageRequest({
+      page: number,
+      pageSize: size,
+      numberOfElements,
+      totalElements,
+    });
+    setCityList(content);
+  };
+  const getCityListWithSearchString = async (page: IPage) => {
+    const {
+      data: { content, number, numberOfElements, size, totalElements },
+    } = await axios.get(
+      `/api/v1/city/search?page=${page.page}&&pageSize=${page.pageSize}&&searchString=${page.searchString}`
+    );
+  setPageRequest({
       page: number,
       pageSize: size,
       numberOfElements,
@@ -48,17 +66,31 @@ export const CityListTable = () => {
       pageSize: Number(event.target.value),
     });
   };
+  const handleSearch = (searchString: any) => {
+    getCityListWithSearchString({
+      page: DEFAULT_PAGE,
+      pageSize: DEFAULT_PAGE_SIZE,
+      searchString,
+    });
+  };
+  const handleReset = () => {
+    getCityList({ page: DEFAULT_PAGE, pageSize: DEFAULT_PAGE_SIZE });
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small">
-        <CityListTableHeader />
-        <CityListTableBody cityList={cityList} />
-      </Table>
-      <CityListTablePagination
-        pageRequest={pageRequest}
-        pageChange={pageChangeHandler}
-        sizeChange={sizeChangeHandler}
-      />
-    </TableContainer>
+    <>
+      <Search handleSearch={handleSearch} handleReset={handleReset} />
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small">
+          <CityListTableHeader />
+          <CityListTableBody cityList={cityList} />
+        </Table>
+        <CityListTablePagination
+          pageRequest={pageRequest}
+          pageChange={pageChangeHandler}
+          sizeChange={sizeChangeHandler}
+        />
+      </TableContainer>
+    </>
   );
 };
