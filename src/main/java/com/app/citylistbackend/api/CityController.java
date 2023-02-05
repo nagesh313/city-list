@@ -40,6 +40,14 @@ public class CityController {
         return cityRepository.findAll(Pageable.ofSize(pageSize).withPage(page));
     }
 
+    @GetMapping("/search")
+    public Page<City> searchCities(
+            @RequestParam String searchString,
+            @RequestParam(defaultValue = "0") @PositiveOrZero(message = PAGE_MUST_BE_EQUAL_OR_GREATER_THAN_0) int page,
+            @RequestParam(defaultValue = "10") @Positive(message = PAGE_SIZE_MUST_BE_GREATER_THAN_0) int pageSize) {
+        return cityRepository.findByNameIgnoreCaseLike("%" + searchString + "%", Pageable.ofSize(pageSize).withPage(page));
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map> constraintViolationException(ConstraintViolationException ex, WebRequest request) {
         Map<String, List<String>> result = new HashMap<>();
