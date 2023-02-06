@@ -21,3 +21,7 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    - uses: actions/upload-artifact@master
+      with:
+        name: backend-build
+        path: target/city-list-backend-0.0.1-SNAPSHOT.jar
