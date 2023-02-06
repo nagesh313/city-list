@@ -17,6 +17,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.app.citylistbackend.constant.ValidationConstants.PAGE_MUST_BE_EQUAL_OR_GREATER_THAN_0;
@@ -46,6 +47,20 @@ public class CityController {
             @RequestParam(defaultValue = "0") @PositiveOrZero(message = PAGE_MUST_BE_EQUAL_OR_GREATER_THAN_0) int page,
             @RequestParam(defaultValue = "10") @Positive(message = PAGE_SIZE_MUST_BE_GREATER_THAN_0) int pageSize) {
         return cityRepository.findByNameIgnoreCaseLike("%" + searchString + "%", Pageable.ofSize(pageSize).withPage(page));
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<?> editCity(@RequestBody City city) {
+        Optional<City> optionalCity = cityRepository.findById(city.getId());
+        if (optionalCity.isPresent()) {
+            City cityObject = optionalCity.get();
+            cityObject.setName(city.getName());
+            cityObject.setPhoto(city.getPhoto());
+            cityRepository.save(city);
+            return ResponseEntity.ok().body(cityObject);
+        } else {
+            return ResponseEntity.badRequest().body("Bad CityId");
+        }
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

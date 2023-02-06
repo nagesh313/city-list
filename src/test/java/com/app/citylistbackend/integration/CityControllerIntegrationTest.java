@@ -1,5 +1,7 @@
 package com.app.citylistbackend.integration;
 
+import com.app.citylistbackend.repository.entity.City;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static com.app.citylistbackend.constant.ValidationConstants.PAGE_MUST_BE_EQUAL_OR_GREATER_THAN_0;
 import static com.app.citylistbackend.constant.ValidationConstants.PAGE_SIZE_MUST_BE_GREATER_THAN_0;
+import static com.app.citylistbackend.util.TestUtil.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
@@ -70,12 +73,34 @@ class CityControllerIntegrationTest {
 
     }
 
-    private void validateConstraint(ResultActions response, String constraint) throws Exception {
-        validateMatcher(response, jsonPath("$.errors", Matchers.hasItem(constraint)));
+    @Test
+    void testEditCity() throws Exception {
+
+        City tokyo = getCity(1L, "Edited Tokyo", "Edited Photo");
+
+        ResultActions response = mockAndReturnResultActionsForEdit(tokyo);
+        validateMatcher(response, MockMvcResultMatchers.status().isOk());
+
+        response = mockAndReturnResultActionsForSearch("Edited Tokyo", 0, 1);
+        response.andExpect(jsonPath("$.content[0].id", Matchers.equalTo(1)));
+        response.andExpect(jsonPath("$.content[0].name", Matchers.equalTo(tokyo.getName())));
     }
 
-    private void validateMatcher(ResultActions response, ResultMatcher matcher) throws Exception {
-        response.andExpect(matcher);
+    @Test
+    void testEditCity_CityRepositoryFindByIdReturnsAbsent() throws Exception {
+
+        City tokyo = getCity(-1L, "Tokyo", "Photo");
+
+        ResultActions response = mockAndReturnResultActionsForEdit(tokyo);
+        validateMatcher(response, MockMvcResultMatchers.status().isBadRequest());
+        response.andExpect(jsonPath("$", Matchers.equalTo("Bad CityId")));
+    }
+
+    private ResultActions mockAndReturnResultActionsForEdit(City editCity) throws Exception {
+        return mockMvc.perform(put("/api/v1/city/edit")
+                .content(new ObjectMapper().writeValueAsString(editCity))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
     }
 
     private ResultActions mockAndReturnResultActionsForSearch(String searchString, int page, int pageSize) throws Exception {
