@@ -9,6 +9,7 @@ export const CityListTableHeader = () => (
       <TableCell align="left">ID</TableCell>
       <TableCell align="center">Name</TableCell>
       <TableCell align="center">Photo</TableCell>
+      <TableCell align="center">Edit</TableCell>
     </TableRow>
   </TableHead>
 );

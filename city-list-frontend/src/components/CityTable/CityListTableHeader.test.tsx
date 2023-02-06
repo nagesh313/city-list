@@ -12,4 +12,7 @@ test("renders CityListTableHeader Component", () => {
 
   linkElement = screen.getByText(/Photo/i);
   expect(linkElement).toBeInTheDocument();
+  
+  linkElement = screen.getByText(/Edit/i);
+  expect(linkElement).toBeInTheDocument();
 });
