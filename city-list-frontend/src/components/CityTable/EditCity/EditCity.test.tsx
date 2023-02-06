@@ -64,4 +64,23 @@ describe("Test EditCity", () => {
     expect(JSON.parse(request.config.data).name).toEqual("newCityName");
     expect(JSON.parse(request.config.data).photo).toEqual("newCityPhoto");
   });
+  it("should test Cancel button", async () => {
+    const openEditDialog = true;
+    const setOpenEditDialog = jest.fn();
+    const city = SimpleResponse.response.content[0];
+    act(() => {
+      render(
+        <EditCityDialog
+          openEditDialog={openEditDialog}
+          setOpenEditDialog={setOpenEditDialog}
+          city={city}
+        />
+      );
+    });
+    const cancelButton = screen.getByRole("button", { name: "Cancel" });
+    act(() => {
+      fireEvent.click(cancelButton, {});
+    });
+    expect(setOpenEditDialog).toHaveBeenCalledWith(false);
+  });
 });
