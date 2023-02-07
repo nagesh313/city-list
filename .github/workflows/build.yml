@@ -64,6 +64,8 @@ jobs:
           path: backend-build
 #      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
  #     - run: "npm install -g heroku"
+      - run: "touch system.properties"
+      - run: "echo -e 'java.runtime.version=11' >> system.properties"
       - run: "heroku plugins:install java"
       - run: "heroku deploy:jar backend-build/city-list-backend-0.0.1-SNAPSHOT.jar --app city-list"
  #       with:
