@@ -42,8 +42,8 @@ export const CityListTable = () => {
       setCityList
     );
   };
-  const handleSearch = (searchString: any) => {
-    getCityListWithSearchString(
+  const handleSearch = async (searchString: any) => {
+    await getCityListWithSearchString(
       {
         page: DEFAULT_PAGE,
         pageSize: DEFAULT_PAGE_SIZE,
@@ -53,8 +53,8 @@ export const CityListTable = () => {
       setCityList
     );
   };
-  const handleReset = () => {
-    getCityList(
+  const handleReset = async () => {
+    await getCityList(
       { page: DEFAULT_PAGE, pageSize: DEFAULT_PAGE_SIZE },
       setPageRequest,
       setCityList
@@ -67,7 +67,9 @@ export const CityListTable = () => {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small">
           <CityListTableHeader />
-          <CityListTableBody cityList={cityList} />
+          <CityListTableBody
+            cityList={cityList}
+          />
         </Table>
         <CityListTablePagination
           pageRequest={pageRequest}

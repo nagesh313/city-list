@@ -25,7 +25,7 @@ export const EditCityDialog = (props: {
       name: event.target["cityName"].value,
       photo: event.target["cityPhoto"].value,
     };
-    editCity(updatedCityData, enqueueSnackbar, props);
+    editCity(updatedCityData, enqueueSnackbar, props.setOpenEditDialog);
   };
   return (
     <Dialog open={props.openEditDialog} onClose={handleClose}>

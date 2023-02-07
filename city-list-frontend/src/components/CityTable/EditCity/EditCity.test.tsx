@@ -1,17 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import moxios from "moxios";
 import React from "react";
 import { act } from "react-dom/test-utils";
 import { SimpleResponse } from "../../../TestData/data";
 import { EditCityDialog } from "./EditCity";
-
+import axios from "axios";
+jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 describe("Test EditCity", () => {
   beforeEach(() => {
-    moxios.install();
-    moxios.stubRequest("/api/v1/city/edit?page=0&&pageSize=10", {});
-  });
-  afterEach(() => {
-    moxios.uninstall();
+    mockedAxios.put.mockResolvedValue({ data: { ...SimpleResponse.response } });
+    mockedAxios.get.mockResolvedValue({ data: { ...SimpleResponse.response } });
   });
   it("renders EditCityDialog with Right Values", () => {
     const openEditDialog = true;
@@ -60,9 +58,9 @@ describe("Test EditCity", () => {
         },
       });
     });
-    const request = moxios.requests.mostRecent();
-    expect(JSON.parse(request.config.data).name).toEqual("newCityName");
-    expect(JSON.parse(request.config.data).photo).toEqual("newCityPhoto");
+    const mockCallData: any = mockedAxios.put.mock.calls[0][1];
+    expect(mockCallData.name).toEqual("newCityName");
+    expect(mockCallData.photo).toEqual("newCityPhoto");
   });
   it("should test Cancel button", async () => {
     const openEditDialog = true;

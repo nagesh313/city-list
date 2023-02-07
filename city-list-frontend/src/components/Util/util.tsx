@@ -58,5 +58,5 @@ const successSnackbar = {
 };
 const failureSnackbar = {
   autoHideDuration: 3000,
-  variant: "success",
+  variant: "error",
 };
