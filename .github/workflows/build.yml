@@ -42,7 +42,7 @@ jobs:
         name: frontend-build
         path: frontend-build
     - run: mkdir src/main/resources/static
-    - run: cp -r frontend-build/**/* src/main/resources/static/
+    - run: cp -r frontend-build/* src/main/resources/static/
     - name: Package with Maven
       run: mvn package
     - uses: actions/upload-artifact@master
