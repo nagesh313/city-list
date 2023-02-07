@@ -21,6 +21,7 @@ describe("Test EditCity", () => {
           openEditDialog={openEditDialog}
           setOpenEditDialog={setOpenEditDialog}
           city={city}
+          updatePage={jest.fn()}
         />
       );
     });
@@ -40,12 +41,14 @@ describe("Test EditCity", () => {
     const openEditDialog = true;
     const setOpenEditDialog = jest.fn();
     const city = SimpleResponse.response.content[0];
+    const updateCityAction = jest.fn();
     act(() => {
       render(
         <EditCityDialog
           openEditDialog={openEditDialog}
           setOpenEditDialog={setOpenEditDialog}
           city={city}
+          updatePage={updateCityAction}
         />
       );
     });
@@ -61,6 +64,7 @@ describe("Test EditCity", () => {
     const mockCallData: any = mockedAxios.put.mock.calls[0][1];
     expect(mockCallData.name).toEqual("newCityName");
     expect(mockCallData.photo).toEqual("newCityPhoto");
+    expect(updateCityAction).toHaveBeenCalled();
   });
   it("should test Cancel button", async () => {
     const openEditDialog = true;
@@ -72,6 +76,7 @@ describe("Test EditCity", () => {
           openEditDialog={openEditDialog}
           setOpenEditDialog={setOpenEditDialog}
           city={city}
+          updatePage={jest.fn()}
         />
       );
     });

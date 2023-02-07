@@ -12,6 +12,7 @@ import { editCity } from "../../Util/util";
 export const EditCityDialog = (props: {
   openEditDialog: any;
   setOpenEditDialog: any;
+  updatePage: any;
   city: any;
 }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -26,6 +27,7 @@ export const EditCityDialog = (props: {
       photo: event.target["cityPhoto"].value,
     };
     editCity(updatedCityData, enqueueSnackbar, props.setOpenEditDialog);
+    props.updatePage();
   };
   return (
     <Dialog open={props.openEditDialog} onClose={handleClose}>

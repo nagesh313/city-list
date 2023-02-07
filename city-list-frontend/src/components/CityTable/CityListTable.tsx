@@ -69,6 +69,9 @@ export const CityListTable = () => {
           <CityListTableHeader />
           <CityListTableBody
             cityList={cityList}
+            updatePage={() =>
+              getCityList(pageRequest, setPageRequest, setCityList)
+            }
           />
         </Table>
         <CityListTablePagination
