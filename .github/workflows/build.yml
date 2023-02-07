@@ -45,7 +45,9 @@ jobs:
         path: frontend-build
     - run: ls 
     - run: ls target
-    - run: cp frontend-build/* target/static/
+    - run: ls target/classes
+    - run: ls target/classes/static
+    - run: cp frontend-build/* target/classes/static/
     - name: Package with Maven
       run: mvn package
     - uses: actions/upload-artifact@master
