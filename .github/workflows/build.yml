@@ -53,7 +53,7 @@ jobs:
         name: frontend-build
         path: frontend-build
     - name: Clean Test with Maven
-      run: mvn clean test
+      run: mvn clean install
     - run: ls frontend-build
     - run: cp frontend-build/* target/classes/static
     - name: Package with Maven
