@@ -8,7 +8,7 @@ import { EditCityDialog } from "./EditCity";
 describe("Test EditCity", () => {
   beforeEach(() => {
     moxios.install();
-    moxios.stubRequest("put", "/api/v1/city/edit?page=0&&pageSize=10", {});
+    moxios.stubRequest("/api/v1/city/edit?page=0&&pageSize=10", {});
   });
   afterEach(() => {
     moxios.uninstall();

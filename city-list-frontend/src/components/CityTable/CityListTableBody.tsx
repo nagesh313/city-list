@@ -10,7 +10,7 @@ export const CityListTableBody = (props: { cityList: City[] }) => {
   const [openEditDialog, setOpenEditDialog] = React.useState(false);
   const [city, setCity] = React.useState({});
   return (
-    <div>
+    <>
       <EditCityDialog
         openEditDialog={openEditDialog}
         setOpenEditDialog={setOpenEditDialog}
@@ -45,6 +45,6 @@ export const CityListTableBody = (props: { cityList: City[] }) => {
           </TableRow>
         ))}
       </TableBody>
-    </div>
+    </>
   );
 };
