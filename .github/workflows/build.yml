@@ -49,6 +49,16 @@ jobs:
       with:
         name: backend-build
         path: target/city-list-backend-0.0.1-SNAPSHOT.jar
+  build:
+    needs: ["backend-build"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "city-list"
+          heroku_email: "nagesh3.13@gmail.com"
   sonar-frontend:
     defaults:
       run:
