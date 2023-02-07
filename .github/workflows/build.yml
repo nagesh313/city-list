@@ -50,7 +50,7 @@ jobs:
     - run: ls src/main
     - run: ls src/main/resources
     - run: mkdir src/main/resources/static
-    - run: cp frontend-build/* src/main/resources/static/
+    - run: cp frontend-build/**/* src/main/resources/static/
     - name: Package with Maven
       run: mvn package
     - uses: actions/upload-artifact@master
