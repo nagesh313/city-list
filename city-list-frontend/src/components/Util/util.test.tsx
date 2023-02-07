@@ -8,7 +8,7 @@ describe("Test Util", () => {
   let setPageRequest: jest.Mock<any, any>;
   let setCityList: jest.Mock<any, any>;
   beforeEach(() => {
-    page == { page: 0, pageSize: 10 };
+    page = { page: 0, pageSize: 10 };
     setPageRequest = jest.fn();
     setCityList = jest.fn();
     mockedAxios.put.mockResolvedValue({ data: { ...SimpleResponse.response } });
