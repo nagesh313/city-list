@@ -69,4 +69,4 @@ jobs:
           path: frontend-build
       - run: ls frontend-build
       - run: ls backend-build
-      - run: frontend-build/* backend-build\BOOT-INF\classes\static
+      - run: cp frontend-build/* backend-build\BOOT-INF\classes\static
