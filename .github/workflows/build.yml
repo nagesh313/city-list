@@ -22,9 +22,6 @@ jobs:
           cache-dependency-path: city-list-frontend/package-lock.json
       - run: npm install
       - run: npm run build
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       - uses: actions/upload-artifact@master
         with:
           name: frontend-build
@@ -46,10 +43,6 @@ jobs:
       with:
         name: frontend-build
         path: frontend-build
-    - run: ls     
-    - run: ls target
-    - run: ls target    
-    - run: ls target/classes/static
     - run: cp frontend-build/* target/static/
     - name: Package with Maven
       run: mvn package
@@ -94,11 +87,8 @@ jobs:
         cache: maven
     - name: Clean Test
       run: mvn test
-    - run: npm run test:coverage
     - name: Official SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@v1.2.0
-      with:
-        projectBaseDir: city-list-frontend
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
