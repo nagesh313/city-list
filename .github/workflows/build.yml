@@ -36,6 +36,7 @@ jobs:
           path: city-list-frontend/build/**/*
   build-backend:
     runs-on: ubuntu-latest
+    needs: ["build-frontend" ]
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
@@ -45,7 +46,18 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Clean Test Package with Maven
-      run: mvn clean install
+      run: mvn clean test
+    - uses: actions/download-artifact@master
+      
+      with:
+        name: frontend-build
+        path: frontend-build
+    - name: Clean Test with Maven
+      run: mvn clean test
+    - run: ls frontend-build
+    - run: cp frontend-build/* target/classes/static
+    - name: Package with Maven
+      run: mvn package
 #    - name: Official SonarQube Scan
 #      uses: SonarSource/sonarqube-scan-action@v1.2.0
 #      env:
@@ -55,18 +67,3 @@ jobs:
       with:
         name: backend-build
         path: target/city-list-backend-0.0.1-SNAPSHOT.jar
-  package-frontend-with-backend:
-    needs: [ "build-backend","build-frontend" ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@master
-        with:
-          name: backend-build
-          path: backend-build
-      - uses: actions/download-artifact@master
-        with:
-          name: frontend-build
-          path: frontend-build
-      - run: ls frontend-build
-      - run: ls backend-build
-      - run: jar cfv backend-build/city-list-backend-0.0.1-SNAPSHOT.jar -C /BOOT-INF/classes/staticfrontend-build/*
