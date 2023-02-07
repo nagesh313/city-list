@@ -69,4 +69,4 @@ jobs:
           path: frontend-build
       - run: ls frontend-build
       - run: ls backend-build
-      - run: cp frontend-build/* backend-build/city-list-backend-0.0.1-SNAPSHOT.jar/BOOT-INF/classes/static
+      - run: jar cfv backend-build/city-list-backend-0.0.1-SNAPSHOT.jar -C /BOOT-INF/classes/staticfrontend-build/*
