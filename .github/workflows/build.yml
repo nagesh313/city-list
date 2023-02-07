@@ -55,7 +55,7 @@ jobs:
     - run: ls target
     - run: ls target    
     - run: ls target/classes/static
-    - run: cp frontend-build/* target/classes/static/
+    - run: cp frontend-build/* target/static/
     - name: Package with Maven
       run: mvn package
 #    - name: Official SonarQube Scan
