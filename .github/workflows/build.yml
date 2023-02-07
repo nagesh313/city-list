@@ -33,7 +33,7 @@ jobs:
       - uses: actions/upload-artifact@master
         with:
           name: frontend-build
-          path: build
+          path: city-list-frontend/build/**/*
   build-backend:
     runs-on: ubuntu-latest
     steps:
