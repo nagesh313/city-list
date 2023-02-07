@@ -5,14 +5,14 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import * as React from "react";
-import { City } from "../../interfaces/City";
+import { editCity } from "../../Util/util";
 
 export const EditCityDialog = (props: {
   openEditDialog: any;
   setOpenEditDialog: any;
+  updatePage: any;
   city: any;
 }) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -26,24 +26,8 @@ export const EditCityDialog = (props: {
       name: event.target["cityName"].value,
       photo: event.target["cityPhoto"].value,
     };
-    updateCity(updatedCityData);
-  };
-  const updateCity = (updatedCity: City) => {
-    axios
-      .put("/api/v1/city/edit", updatedCity)
-      .then(() => {
-        enqueueSnackbar("City Updated Successfully", {
-          autoHideDuration: 3000,
-          variant: "success",
-        });
-        props.setOpenEditDialog(false);
-      })
-      .catch(() => {
-        enqueueSnackbar("Could not Update City!!!", {
-          autoHideDuration: 3000,
-          variant: "error",
-        });
-      });
+    editCity(updatedCityData, enqueueSnackbar, props.setOpenEditDialog);
+    props.updatePage();
   };
   return (
     <Dialog open={props.openEditDialog} onClose={handleClose}>

@@ -1,10 +1,10 @@
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
-import axios from "axios";
 import * as React from "react";
 import { City } from "../interfaces/City";
-import { IPage, IPageRequest } from "../interfaces/PageRequest";
+import { IPageRequest } from "../interfaces/PageRequest";
+import { getCityList, getCityListWithSearchString } from "../Util/util";
 import { CityListTableBody } from "./CityListTableBody";
 import { CityListTableHeader } from "./CityListTableHeader";
 import { CityListTablePagination } from "./CityListTablePagination";
@@ -22,59 +22,43 @@ export const CityListTable = () => {
     totalElements: DEFAULT_TOTAL_ELEMENTS,
   });
 
-  const getCityList = async (page: IPage) => {
-    const {
-      data: { content, number, numberOfElements, size, totalElements },
-    } = await axios.get(
-      `/api/v1/city/list?page=${page.page}&&pageSize=${page.pageSize}`
-    );
-    setPageRequest({
-      page: number,
-      pageSize: size,
-      numberOfElements,
-      totalElements,
-    });
-    setCityList(content);
-  };
-  const getCityListWithSearchString = async (page: IPage) => {
-    const {
-      data: { content, number, numberOfElements, size, totalElements },
-    } = await axios.get(
-      `/api/v1/city/search?page=${page.page}&&pageSize=${page.pageSize}&&searchString=${page.searchString}`
-    );
-  setPageRequest({
-      page: number,
-      pageSize: size,
-      numberOfElements,
-      totalElements,
-    });
-    setCityList(content);
-  };
-
   React.useEffect(() => {
-    getCityList(pageRequest);
+    getCityList(pageRequest, setPageRequest, setCityList);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const pageChangeHandler = (
     event: React.MouseEvent<HTMLButtonElement>,
     newPageNumber: number
   ) => {
-    getCityList({ page: newPageNumber, pageSize: pageRequest.pageSize });
+    getCityList(
+      { page: newPageNumber, pageSize: pageRequest.pageSize },
+      setPageRequest,
+      setCityList
+    );
   };
   const sizeChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    getCityList({
-      page: pageRequest.page,
-      pageSize: Number(event.target.value),
-    });
+    getCityList(
+      { page: pageRequest.page, pageSize: Number(event.target.value) },
+      setPageRequest,
+      setCityList
+    );
   };
-  const handleSearch = (searchString: any) => {
-    getCityListWithSearchString({
-      page: DEFAULT_PAGE,
-      pageSize: DEFAULT_PAGE_SIZE,
-      searchString,
-    });
+  const handleSearch = async (searchString: any) => {
+    await getCityListWithSearchString(
+      {
+        page: DEFAULT_PAGE,
+        pageSize: DEFAULT_PAGE_SIZE,
+        searchString,
+      },
+      setPageRequest,
+      setCityList
+    );
   };
-  const handleReset = () => {
-    getCityList({ page: DEFAULT_PAGE, pageSize: DEFAULT_PAGE_SIZE });
+  const handleReset = async () => {
+    await getCityList(
+      { page: DEFAULT_PAGE, pageSize: DEFAULT_PAGE_SIZE },
+      setPageRequest,
+      setCityList
+    );
   };
 
   return (
@@ -83,7 +67,12 @@ export const CityListTable = () => {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small">
           <CityListTableHeader />
-          <CityListTableBody cityList={cityList} />
+          <CityListTableBody
+            cityList={cityList}
+            updatePage={() =>
+              getCityList(pageRequest, setPageRequest, setCityList)
+            }
+          />
         </Table>
         <CityListTablePagination
           pageRequest={pageRequest}

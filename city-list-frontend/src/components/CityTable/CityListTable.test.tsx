@@ -1,17 +1,17 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import moxios from "moxios";
+import axios from "axios";
 import React from "react";
 import { act } from "react-dom/test-utils";
 import { SimpleResponse } from "../../TestData/data";
 import { CityListTable } from "./CityListTable";
 
+jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
+
 describe("Test CityListTable", () => {
   beforeEach(() => {
-    moxios.install();
-    moxios.stubRequest("/api/v1/city/list?page=0&&pageSize=10", SimpleResponse);
-  });
-  afterEach(() => {
-    moxios.uninstall();
+    mockedAxios.put.mockResolvedValue({ data: { ...SimpleResponse.response } });
+    mockedAxios.get.mockResolvedValue({ data: { ...SimpleResponse.response } });
   });
   it("renders CityListTable after fulfilling API call", async () => {
     act(() => {
@@ -36,27 +36,30 @@ describe("Test CityListTable", () => {
 
   it("resets CityListTable after click on reset button", async () => {
     const searchText = "test";
-    await searchTextFlow(searchText);
+    const searchResponse = JSON.parse(JSON.stringify(SimpleResponse));
+    searchResponse.response.content[0].name = searchText;
+    mockedAxios.get.mockResolvedValue({ data: { ...searchResponse.response } });
+    act(() => {
+      render(<CityListTable />);
+    });
+    let linkElement = await screen.findByText(/test/i);
+    mockedAxios.put.mockResolvedValue({ data: { ...SimpleResponse.response } });
     const resetButton = screen.getByRole("button", { name: "Reset" });
     act(() => {
       fireEvent.reset(resetButton, {});
     });
-    await Promise.resolve();
-    const linkElement = await screen.findByText(/Beijing/i);
+    linkElement = await screen.findByText(/111111/i);
     expect(linkElement).toBeInTheDocument();
   });
 
   const searchTextFlow = async (searchText: string) => {
     const searchResponse = JSON.parse(JSON.stringify(SimpleResponse));
     searchResponse.response.content[0].name = searchText;
-    moxios.stubRequest(
-      "/api/v1/city/search?page=0&&pageSize=10&&searchString=test",
-      searchResponse
-    );
+    mockedAxios.get.mockResolvedValue({ data: { ...searchResponse.response } });
     act(() => {
       render(<CityListTable />);
     });
-    let linkElement = await screen.findByText(/Beijing/i);
+    let linkElement = await screen.findByText(/test/i);
     expect(linkElement).toBeInTheDocument();
     const submitButton = screen.getByRole("button", { name: "Submit" });
     act(() => {

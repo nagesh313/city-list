@@ -6,14 +6,18 @@ import TableRow from "@mui/material/TableRow";
 import * as React from "react";
 import { City } from "../interfaces/City";
 import { EditCityDialog } from "./EditCity/EditCity";
-export const CityListTableBody = (props: { cityList: City[] }) => {
+export const CityListTableBody = (props: {
+  cityList: City[];
+  updatePage: any;
+}) => {
   const [openEditDialog, setOpenEditDialog] = React.useState(false);
   const [city, setCity] = React.useState({});
   return (
-    <div>
+    <>
       <EditCityDialog
         openEditDialog={openEditDialog}
         setOpenEditDialog={setOpenEditDialog}
+        updatePage={props.updatePage}
         city={city}
       />
       <TableBody>
@@ -45,6 +49,6 @@ export const CityListTableBody = (props: { cityList: City[] }) => {
           </TableRow>
         ))}
       </TableBody>
-    </div>
+    </>
   );
 };
