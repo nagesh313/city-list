@@ -37,18 +37,10 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Clean Test Package with Maven
-      run: mvn clean install
     - uses: actions/download-artifact@master
       with:
         name: frontend-build
         path: frontend-build
-    - run: ls 
-    - run: ls target
-    - run: ls target/classes
-    - run: ls src
-    - run: ls src/main
-    - run: ls src/main/resources
     - run: mkdir src/main/resources/static
     - run: cp -r frontend-build/**/* src/main/resources/static/
     - name: Package with Maven
