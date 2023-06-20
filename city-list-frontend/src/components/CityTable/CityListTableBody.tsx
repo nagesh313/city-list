@@ -5,7 +5,10 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import * as React from "react";
 import { City } from "../interfaces/City";
-import { EditCityDialog } from "./EditCity/EditCity";
+const EditCityDialog = React.lazy(
+  () => import(/* webpackChunkName: "EditCityDialog" */ "./EditCity/EditCity")
+);
+
 export const CityListTableBody = (props: {
   cityList: City[];
   updatePage: any;
@@ -14,12 +17,16 @@ export const CityListTableBody = (props: {
   const [city, setCity] = React.useState({});
   return (
     <>
-      <EditCityDialog
-        openEditDialog={openEditDialog}
-        setOpenEditDialog={setOpenEditDialog}
-        updatePage={props.updatePage}
-        city={city}
-      />
+      <React.Suspense fallback={<div>Loading Component</div>}>
+        {openEditDialog && (
+          <EditCityDialog
+            openEditDialog={openEditDialog}
+            setOpenEditDialog={setOpenEditDialog}
+            updatePage={props.updatePage}
+            city={city}
+          />
+        )}
+      </React.Suspense>
       <TableBody>
         {props.cityList.map((row: City) => (
           <TableRow key={row.id}>
